@@ -15,7 +15,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def run_bot(bot_token: str, project_id: str) -> None:
+def run_tg_bot(bot_token: str, project_id: str) -> None:
     """Start the bot."""
     application = Application.builder().token(bot_token).build()
 
@@ -54,7 +54,7 @@ def main() -> None:
     bot_token = os.environ['TELEGRAM_TOKEN']
     project_id = get_project_id(google_aplication)
 
-    run_bot(bot_token, project_id)
+    run_tg_bot(bot_token, project_id)
 
 
 if __name__ == "__main__":
