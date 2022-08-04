@@ -16,7 +16,7 @@ class Intent:
     answers: list
 
 
-def create_parser():
+def create_parser() -> argparse.ArgumentParser:
     """Create parser"""
     parser = argparse.ArgumentParser()
     parser.add_argument(

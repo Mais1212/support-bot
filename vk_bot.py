@@ -1,16 +1,18 @@
 import logging
 import os
 import random
-from urllib import response
 
 import vk_api
 from dotenv import load_dotenv
 from vk_api.longpoll import VkEventType, VkLongPoll
 
 from dialogflow import get_project_id, process_with_dialogflow
+from google.api_core.exceptions import InvalidArgument
 
 logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARNING
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.WARNING,
+    filename="vk_bot.log"
 )
 logger = logging.getLogger(__name__)
 
@@ -27,11 +29,15 @@ def run_vk_bot(vk_token: str, project_id: str) -> None:
 
 def _chat(event: vk_api.longpoll.Event, vk: vk_api.vk_api.VkApiMethod, project_id: str) -> None:
     """Process the user message then answer."""
-    response = process_with_dialogflow(
-        session=event.user_id,
-        project_id=project_id,
-        text=event.text,
-    )
+    try:
+        response = process_with_dialogflow(
+            session=event.user_id,
+            project_id=project_id,
+            text=event.text,
+        )
+    except InvalidArgument as exception:
+        logger.error(exception)
+        return
 
     if response.query_result.intent.is_fallback:
         return

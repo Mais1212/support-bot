@@ -10,7 +10,9 @@ from telegram.ext import (Application, CommandHandler, ContextTypes,
 from dialogflow import get_project_id, process_with_dialogflow
 
 logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARNING
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.WARNING,
+    filename="tg_bot.log"
 )
 logger = logging.getLogger(__name__)
 
@@ -41,11 +43,14 @@ async def _chat(update: Update, context: ContextTypes.DEFAULT_TYPE, project_id: 
     message_text = update.message.text
     user_id = update.message.from_user["id"]
 
-    response = process_with_dialogflow(
-        text=message_text,
-        session=user_id,
-        project_id=project_id
-    )
+    try:
+        response = process_with_dialogflow(
+            text=message_text,
+            session=user_id,
+            project_id=project_id
+        )
+    except Exception:
+        pass
     replay_text = response.query_result.fulfillment_text
     await update.message.reply_text(replay_text)
 
