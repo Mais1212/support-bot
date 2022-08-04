@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 from dotenv import load_dotenv
 from google.cloud import dialogflow
+from google.cloud.dialogflow_v2.types.session import DetectIntentResponse
 
 
 @dataclass(frozen=True)
@@ -75,8 +76,9 @@ def _create_intent(project_id: str, intent: Intent) -> None:
     message = dialogflow.Intent.Message(text=text)
 
     intent = dialogflow.Intent(
-        display_name=intent.name, training_phrases=training_phrases, messages=[
-            message]
+        display_name=intent.name,
+        training_phrases=training_phrases,
+        messages=[message]
     )
 
     response = intents_client.create_intent(
@@ -95,7 +97,7 @@ def get_project_id(json_name: str) -> str:
     return project_id
 
 
-def process_with_dialogflow(text: str, project_id: str, session: str) -> str:
+def process_with_dialogflow(text: str, project_id: str, session: str) -> DetectIntentResponse:
     """Return processed text from dialogflow."""
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(project_id, session)
@@ -108,9 +110,7 @@ def process_with_dialogflow(text: str, project_id: str, session: str) -> str:
         request={"session": session, "query_input": query_input}
     )
 
-    fulfillment_text = response.query_result.fulfillment_text
-
-    return fulfillment_text
+    return response
 
 
 if __name__ == '__main__':

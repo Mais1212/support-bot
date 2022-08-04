@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+from urllib import response
 
 import vk_api
 from dotenv import load_dotenv
@@ -26,11 +27,16 @@ def run_vk_bot(vk_token: str, project_id: str) -> None:
 
 def _chat(event: vk_api.longpoll.Event, vk: vk_api.vk_api.VkApiMethod, project_id: str) -> None:
     """Process the user message then answer."""
-    message = process_with_dialogflow(
+    response = process_with_dialogflow(
         session=event.user_id,
         project_id=project_id,
         text=event.text,
     )
+
+    if response.query_result.intent.is_fallback:
+        return
+
+    message = response.query_result.fulfillment_text
 
     vk.messages.send(
         user_id=event.user_id,

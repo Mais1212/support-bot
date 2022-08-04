@@ -40,11 +40,13 @@ async def _chat(update: Update, context: ContextTypes.DEFAULT_TYPE, project_id: 
     """Process the user message then answer."""
     message_text = update.message.text
     user_id = update.message.from_user["id"]
-    replay_text = process_with_dialogflow(
+
+    response = process_with_dialogflow(
         text=message_text,
         session=user_id,
         project_id=project_id
     )
+    replay_text = response.query_result.fulfillment_text
     await update.message.reply_text(replay_text)
 
 
