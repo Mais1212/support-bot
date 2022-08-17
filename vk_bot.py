@@ -1,16 +1,14 @@
 import logging
-import os
 import random
 
 import vk_api
-from dotenv import load_dotenv
+from environs import Env
 from google.api_core.exceptions import InvalidArgument
 from vk_api.longpoll import VkEventType, VkLongPoll
 
-from logging_bot import TgLoggerHandler
 from dialogflow import get_project_id, process_with_dialogflow
+from logging_bot import TgLoggerHandler
 
-load_dotenv()
 logger = logging.getLogger(__file__)
 
 
@@ -50,10 +48,12 @@ def _chat(event: vk_api.longpoll.Event, vk: vk_api.vk_api.VkApiMethod, project_i
 
 
 def main() -> None:
-    google_aplication = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-    bot_token = os.environ['VK_TOKEN']
-    telegram_debug_token = os.environ['TELEGRAM_DEBUG_TOKEN']
-    telegram_chat_id = os.environ['ADMIN_TG_CHAT_ID']
+    env = Env()
+    Env.read_env()
+    google_aplication = env('GOOGLE_APPLICATION_CREDENTIALS')
+    bot_token = env('VK_TOKEN')
+    telegram_debug_token = env('TELEGRAM_DEBUG_TOKEN')
+    telegram_chat_id = env('ADMIN_TG_CHAT_ID')
 
     logger.setLevel(logging.WARNING)
     logger.addHandler(

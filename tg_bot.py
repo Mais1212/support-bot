@@ -1,8 +1,8 @@
 import logging
-import os
 from functools import partial
 
 from dotenv import load_dotenv
+from environs import Env
 from telegram import ForceReply, Update
 from telegram.ext import (CallbackContext, CommandHandler, Filters,
                           MessageHandler, Updater)
@@ -55,10 +55,12 @@ def _chat(update: Update, context: CallbackContext, project_id: str) -> None:
 
 
 def main() -> None:
-    google_aplication = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-    bot_token = os.environ['TELEGRAM_TOKEN']
-    telegram_debug_token = os.environ['TELEGRAM_DEBUG_TOKEN']
-    admin_telegram_chat_id = os.environ['ADMIN_TG_CHAT_ID']
+    env = Env()
+    Env.read_env()
+    google_aplication = env('GOOGLE_APPLICATION_CREDENTIALS')
+    bot_token = env('TELEGRAM_TOKEN')
+    telegram_debug_token = env('TELEGRAM_DEBUG_TOKEN')
+    admin_telegram_chat_id = env('ADMIN_TG_CHAT_ID')
     project_id = get_project_id(google_aplication)
 
     logger.setLevel(logging.WARNING)

@@ -1,9 +1,8 @@
 import argparse
 import json
-import os
 from dataclasses import dataclass
 
-from dotenv import load_dotenv
+from environs import Env
 from google.cloud import dialogflow
 from google.cloud.dialogflow_v2.types.session import DetectIntentResponse
 
@@ -114,10 +113,11 @@ def process_with_dialogflow(text: str, project_id: str, session: str) -> DetectI
 
 
 if __name__ == '__main__':
-    load_dotenv()
+    env = Env()
+    Env.read_env()
     parser = create_parser()
     namespace = parser.parse_args()
-    google_aplication = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
+    google_aplication = env('GOOGLE_APPLICATION_CREDENTIALS')
 
     project_id = get_project_id(google_aplication)
     _fetch_and_create_intents(namespace.json_name, project_id)
