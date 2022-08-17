@@ -1,7 +1,6 @@
 import logging
 from functools import partial
 
-from dotenv import load_dotenv
 from environs import Env
 from telegram import ForceReply, Update
 from telegram.ext import (CallbackContext, CommandHandler, Filters,
@@ -10,7 +9,6 @@ from telegram.ext import (CallbackContext, CommandHandler, Filters,
 from dialogflow import get_project_id, process_with_dialogflow
 from logging_bot import TgLoggerHandler
 
-load_dotenv()
 logger = logging.getLogger(__file__)
 
 
