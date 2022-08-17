@@ -4,17 +4,14 @@ import random
 
 import vk_api
 from dotenv import load_dotenv
+from google.api_core.exceptions import InvalidArgument
 from vk_api.longpoll import VkEventType, VkLongPoll
 
+from logging_bot import TgLoggerHandler
 from dialogflow import get_project_id, process_with_dialogflow
-from google.api_core.exceptions import InvalidArgument
 
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.WARNING,
-    filename="vk_bot.log"
-)
-logger = logging.getLogger(__name__)
+load_dotenv()
+logger = logging.getLogger(__file__)
 
 
 def run_vk_bot(vk_token: str, project_id: str) -> None:
@@ -36,8 +33,9 @@ def _chat(event: vk_api.longpoll.Event, vk: vk_api.vk_api.VkApiMethod, project_i
             text=event.text,
         )
     except InvalidArgument as exception:
-        logger.error(exception)
         return
+    except Exception as exception:
+        logger.error(exception)
 
     if response.query_result.intent.is_fallback:
         return
@@ -52,10 +50,19 @@ def _chat(event: vk_api.longpoll.Event, vk: vk_api.vk_api.VkApiMethod, project_i
 
 
 def main() -> None:
-    load_dotenv()
-
     google_aplication = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
     bot_token = os.environ['VK_TOKEN']
+    telegram_debug_token = os.environ['TELEGRAM_DEBUG_TOKEN']
+    telegram_chat_id = os.environ['ADMIN_TG_CHAT_ID']
+
+    logger.setLevel(logging.WARNING)
+    logger.addHandler(
+        TgLoggerHandler(
+            token=telegram_debug_token,
+            chat_id=telegram_chat_id,
+        )
+    )
+
     project_id = get_project_id(google_aplication)
 
     run_vk_bot(bot_token, project_id)
