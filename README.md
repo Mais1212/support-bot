@@ -1,12 +1,12 @@
 # SUPPORT BOT
 
-Боты, которые отвечают на базовые вопросы пользователей с помощью Dialogflow. 
+Боты, которые отвечают на базовые вопросы пользователей с помощью Dialogflow.
 
-Пример работы бота Telegram:
+Пример работы бота [Telegram (нажмите)]("https://t.me/chelobbot"):
 
 ![Пример работы Telegram бота.](https://dvmn.org/filer/canonical/1569214094/323/)
 
-Пример работы бота Вконтакте:
+Пример работы бота [VK (нажмите)]("https://vk.com/im?sel=-214882658"):
 
 ![Пример работы VK бота.](https://dvmn.org/filer/canonical/1569214089/322/)
 ## Как запустить 
@@ -31,7 +31,7 @@ python vk_bot.py
 Необходимы следущие переменные:
 - `TELEGRAM_TOKEN` — Telegram token вашего бота, для получения нужно написать @BotFather в телеграме.
 - `VK_TOKEN` — VK token c возможностью отправлять сообщения. Как [получить](https://pechenek.net/social-networks/vk/api-vk-poluchaem-klyuch-dostupa-token-gruppy/).
-- `GOOGLE_APPLICATION_CREDENTIALS` – путь до вашего JSON ключа от google aplication. Как [получить](https://cloud.google.com/docs/authentication/getting-started)
+- `GOOGLE_APPLICATION_CREDENTIALS` – путь до вашего JSON ключа от google aplication. Как [получить](https://cloud.google.com/docs/authentication/getting-started).
 ## Загрузка Intent'ов
 Для того чтобы загрузить intent'ы вам нужно:
 1. Создать файл формата json.
