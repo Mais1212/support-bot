@@ -2,11 +2,11 @@
 
 Боты, которые отвечают на базовые вопросы пользователей с помощью Dialogflow.
 
-Пример работы бота [Telegram (нажмите)]("https://t.me/chelobbot"):
+Пример работы бота [Telegram (нажмите)](https://t.me/chelobbot):
 
 ![Пример работы Telegram бота.](https://dvmn.org/filer/canonical/1569214094/323/)
 
-Пример работы бота [VK (нажмите)]("https://vk.com/im?sel=-214882658"):
+Пример работы бота [VK (нажмите)](https://vk.com/im?sel=-214882658):
 
 ![Пример работы VK бота.](https://dvmn.org/filer/canonical/1569214089/322/)
 ## Как запустить 
