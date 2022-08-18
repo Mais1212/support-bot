@@ -28,31 +28,27 @@ def create_parser() -> argparse.ArgumentParser:
 
 def _fetch_intents_from_json(json_name: str) -> list:
     "Load intents from json file."
-    intents = []
+    processed_intents = []
     with open(json_name, "r", encoding="utf-8") as file:
-        json_data = json.load(file)
-    dict_keys = json_data.keys()
+        intents = json.load(file)
 
-    for dict_key in dict_keys:
-
-        answers = json_data[dict_key]["answer"]
+    for name, value in intents.items():
+        answers = value["answer"]
         if type(answers) is str:
             answers = [answers]
-        training_phrases = json_data[dict_key]["questions"]
+        training_phrases = value["questions"]
 
         intent = Intent(
-            name=dict_key,
+            name=name,
             training_phrases=training_phrases,
             answers=answers
         )
-        intents.append(intent)
-
-    return intents
+        processed_intents.append(intent)
+    return processed_intents
 
 
 def _create_intent(project_id: str, intent: Intent) -> None:
     """Create an intent of the given intent type."""
-
     intents_client = dialogflow.IntentsClient()
 
     parent = dialogflow.AgentsClient.agent_path(project_id)
@@ -116,5 +112,6 @@ if __name__ == '__main__':
     project_id = get_project_id(google_aplication)
 
     intents = _fetch_intents_from_json(json_name)
+
     for intent in intents:
         _create_intent(project_id, intent)
