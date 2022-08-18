@@ -26,13 +26,6 @@ def create_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _fetch_and_create_intents(json_name: str, project_id: str) -> None:
-    """Fetch intents from json and create them."""
-    intents = _fetch_intents_from_json(json_name)
-    for intent in intents:
-        _create_intent(project_id, intent)
-
-
 def _fetch_intents_from_json(json_name: str) -> list:
     "Load intents from json file."
     intents = []
@@ -117,7 +110,11 @@ if __name__ == '__main__':
     Env.read_env()
     parser = create_parser()
     namespace = parser.parse_args()
+    json_name = namespace.json_name
     google_aplication = env('GOOGLE_APPLICATION_CREDENTIALS')
 
     project_id = get_project_id(google_aplication)
-    _fetch_and_create_intents(namespace.json_name, project_id)
+
+    intents = _fetch_intents_from_json(json_name)
+    for intent in intents:
+        _create_intent(project_id, intent)

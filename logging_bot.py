@@ -1,6 +1,5 @@
 import logging
 import telegram
-import tracemalloc
 
 
 class TgLoggerHandler(logging.Handler):
@@ -10,7 +9,6 @@ class TgLoggerHandler(logging.Handler):
 
     def __init__(self, token: str, chat_id: int):
         super().__init__()
-        tracemalloc.start()
         self.chat_id = chat_id
         self.token = token
 
