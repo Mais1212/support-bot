@@ -32,14 +32,14 @@ def _fetch_intents_from_json(json_name: str) -> list:
     with open(json_name, "r", encoding="utf-8") as file:
         intents = json.load(file)
 
-    for name, value in intents.items():
-        answers = value["answer"]
+    for intent_name, intent_values in intents.items():
+        answers = intent_values["answer"]
         if type(answers) is str:
             answers = [answers]
-        training_phrases = value["questions"]
+        training_phrases = intent_values["questions"]
 
         intent = Intent(
-            name=name,
+            name=intent_name,
             training_phrases=training_phrases,
             answers=answers
         )
@@ -79,8 +79,7 @@ def _create_intent(project_id: str, intent: Intent) -> None:
 def get_project_id(json_name: str) -> str:
     """Fetch project id from json file."""
     with open(json_name, "r") as file:
-        json_data = json.load(file)
-    project_id = json_data["project_id"]
+        project_id = json.load(file)["project_id"]
 
     return project_id
 
